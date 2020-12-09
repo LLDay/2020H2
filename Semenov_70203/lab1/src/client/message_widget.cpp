@@ -11,7 +11,9 @@ MessageWidget::MessageWidget(const Message & message, QWidget * parent)
     ui->setupUi(this);
 
     auto time = QDateTime::fromTime_t(message.datetime).toLocalTime();
-    auto text = QString::fromStdString(message.text);
+    auto text = QString::fromUtf8(message.text.data(), message.text.size());
+    auto author =
+        QString::fromUtf8(message.author.data(), message.author.size());
     auto newLinesNumber = text.count('\n');
     constexpr auto maxLinesNumber = 20;
 
@@ -21,8 +23,7 @@ MessageWidget::MessageWidget(const Message & message, QWidget * parent)
     ui->textLabel->setPlainText(text);
     ui->textLabel->setFixedHeight(
         ui->textLabel->fontMetrics().height() * (newLinesNumber + 2));
-
-    ui->authorLabel->setText(QString::fromStdString(message.author));
+    ui->authorLabel->setText(author);
     ui->dateLabel->setText(time.toString("hh.mm"));
 }
 

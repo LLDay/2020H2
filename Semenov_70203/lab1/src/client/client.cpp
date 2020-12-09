@@ -69,8 +69,8 @@ void Client::onSendClicked() noexcept {
     text.replace(middle, "\n\n");
 
     Message message;
-    message.author = mName.toStdString();
-    message.text = text.toStdString();
+    message.author = mName.toUtf8().toStdString();
+    message.text = text.toUtf8().toStdString();
 
     IoWriteTask writeTask{mSocket, message};
     writeTask.run();
